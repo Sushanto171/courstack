@@ -33,7 +33,7 @@ export function FeaturedCourses() {
   },
   {
     id: 3,
-    title: "Digital Marketing Masterclass 2024",
+    title: "Digital Markethttpsing Masterclass 2024",
     category: "Marketing",
     rating: 5.0,
     ratingStars: 4,
@@ -55,7 +55,7 @@ export function FeaturedCourses() {
       avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDsKfvhjv0xRZhq8d3-_MeJgvJWNsJRiRn28furJ0qfZ_Fk8TyDWDh39jLCylpdKokp0AdfgOQH3jMcayVSVwCpfA_Ea07DywDkW4oh1tdzPdF0Nc_tfqP1fHIMXAk6-IS0ZlpHhBMiwF1RRMR-G6QmKu_ddnyNdplmM9hxIHQqm2Sn-6j_-Bxg4GvEeei-7WpkIm8k0Whhrb1WtK69rmtkGEvcSd_9rf36NSO9qAb_JdhUGqpcdSGU2cdRLbONwvE1yoL6X9eF1A",
     },
     price: 75,
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAfsdcXTc17rRZhq8d3-_MeJgvJWNsJRiRn28furJ0qfZ_Fk8TyDWDh39jLCylpdKokp0AdfgOQH3jMcayVSVwCpfA_Ea07DywDkW4oh1tdzPdF0Nc_tfqP1fHIMXAk6-IS0ZlpHhBMiwF1RRMR-G6qMKu_ddnyNdplmM9hxIHQqm2Sn-6j_-Bxg4GvEeei-7WpkIm8k0Whhrb1WtK69rmtkGEvcSd_9rf36NSO9qAb_JdhUGqpcdSGU2cdRLbONwvE1yoL6X9eF1A",
+    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuAfsdcXTc17rRZhq8d3-_MeJgvJWNsJRiRn28furJ0qfZ_Fk8TyDWDh39jLCylpdKokp0AdfgOQH3jMcayVSVwCpfA_Ea07DywDkW4oh1tdzPdF0Nc_tfqP1fHIMXAk6-IS0ZlpHhBMiwF1RRMR-G6QmKu_ddnyNdplmM9hxIHQqm2Sn-6j_-Bxg4GvEeei-7WpkIm8k0Whhrb1WtK69rmtkGEvcSd_9rf36NSO9qAb_JdhUGqpcdSGU2cdRLbONwvE1yoL6X9eF1A",
   },
 ];
 

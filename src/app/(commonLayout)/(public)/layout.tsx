@@ -6,10 +6,10 @@ export default function CommonLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (<>
+  return (<div className="flex flex-col min-h-screen">
     <Navbar />
-    <main>{children}</main>
+    <main className="flex-1">{children}</main>
     <Footer />
-  </>
+  </div>
   );
 }

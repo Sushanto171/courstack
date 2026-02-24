@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Star, StarHalf } from "lucide-react";
 import Image from "next/image";
 
@@ -32,36 +32,36 @@ export function CourseCard({ title, category, instructor, price, image, rating }
         />
         <Badge className="absolute top-3 right-3">{category}</Badge>
       </div>
-
-      {/* Title */}
-      <CardHeader className="font-bold text-lg line-clamp-2">{title}</CardHeader>
-
-      <CardContent className="flex items-center gap-2 mt-2">
-        {/* Instructor */}
-        <Avatar className="h-6 w-6">
-          <AvatarImage src={instructor.avatar} />
-          <AvatarFallback>{instructor.name[0]}</AvatarFallback>
-        </Avatar>
-        <span className="text-sm text-muted-foreground">{instructor.name}</span>
-      </CardContent>
-
-      {/* Footer: Price + Optional Rating */}
-      <CardFooter className="flex items-center justify-between">
+      <div className="flex flex-col justify-between h-full gap-3">
         {rating && (
-          <div className="flex items-center gap-1 text-yellow-400 text-sm">
+          <div className="flex px-6 items-center gap-1 text-yellow-400 text-xs">
             {Array.from({ length: 5 }).map((_, i) => {
               const filled = i + 0.5 < rating ? true : false;
               return (
-                <span key={i} className="material-symbols-outlined text-sm" style={{ fontVariationSettings: filled ? "'FILL' 1" : "'FILL' 0" }}>
-                  {i + 1 <= Math.floor(rating) ? <Star /> : i + 1 - rating === 0.5 ? <StarHalf /> : <Star />}
+                <span key={i} className="text-xs" style={{ fontVariationSettings: filled ? "'FILL' 1" : "'FILL' 0" }}>
+                  {i + 1 <= Math.floor(rating) ? <Star fill="yellow" size={15}/> : i + 1 - rating === 0.5 ? <StarHalf size={15} /> : <StarHalf size={15} />}
                 </span>
               );
             })}
             <span className="ml-1 text-xs font-medium text-muted-foreground">({rating.toFixed(1)})</span>
           </div>
         )}
-        <span className="font-bold text-primary">${price}</span>
-      </CardFooter>
+        {/* Title */}
+        <CardHeader className="font-bold text-lg line-clamp-2">{title}</CardHeader>
+
+        <CardContent className="flex items-center gap-2 py-0">
+          {/* Instructor */}
+          <Avatar className="h-6 w-6">
+            <AvatarImage src={instructor.avatar} />
+            <AvatarFallback>{instructor.name[0]}</AvatarFallback>
+          </Avatar>
+          <span className="text-sm text-muted-foreground">{instructor.name}</span>
+
+          <span className="font-bold text-primary">${price}</span>
+        </CardContent>
+      </div>
+
+
     </Card>
   );
 }
