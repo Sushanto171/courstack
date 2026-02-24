@@ -8,4 +8,11 @@ export const userRegisterSchema = z.object({
   terms: z.boolean().refine(v => v === true, "You must accept terms"),
 })
 
+
+export const userLoginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6, "Minimum 6 characters"),
+})
+
 export type UserRegisterValues = z.infer<typeof userRegisterSchema>
+export type UserLoginValues = z.infer<typeof userLoginSchema>

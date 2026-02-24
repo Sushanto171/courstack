@@ -3,16 +3,15 @@ import { Role } from "@/types/user";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
-type User = {
+export type AuthUser = {
   id: string
   name: string
   email: string
   role: Role
-  password?: string
 } | null
 
 type AuthState = {
-  user: User
+  user: AuthUser
   loading: boolean
   error: string | null
 }
@@ -28,7 +27,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<User>) => {
+    setUser: (state, action: PayloadAction<AuthUser>) => {
       state.user = action.payload
     },
     setError: (state, action: PayloadAction<string>) => {

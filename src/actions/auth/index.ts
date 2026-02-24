@@ -1,8 +1,12 @@
 "use server"
 
 import catchAsync from "@/lib/catchAsync"
+import { setJwtCookie } from "@/lib/cookie"
+
+import { handleApiResponse } from "@/lib/handleApiResponse"
 import { serverFetch } from "@/lib/server-fetch"
-import { UserRegisterValues } from "@/zod/auth"
+import { AuthUser } from "@/redux/features/auth/authSlice"
+import { UserLoginValues, UserRegisterValues } from "@/zod/auth"
 
 
 export const userRegisterAction = catchAsync(async (payload: UserRegisterValues,) => {
@@ -10,12 +14,27 @@ export const userRegisterAction = catchAsync(async (payload: UserRegisterValues,
     body: JSON.stringify(payload)
   })
 
-  
-  if (!res.ok) {
-    const err = await res.json()
-    throw Error(err.message || "Registration failed");
-  }
-  const {data} =await res.json()
+  return handleApiResponse(res, "Registration failed")
+})
 
-  return data
+export const loginAction = catchAsync(async (payload: UserLoginValues) => {
+  const res = await serverFetch.post("/auth/login", {
+    body: JSON.stringify(payload),
+  })
+
+  const json = await res.json() // ✅ only called once
+
+  if (!res.ok) {
+    throw new Error(json.message || "Login failed.")
+  }
+
+  const { tokens, userData } = json.data
+
+  if (tokens) {
+    const { accessToken, refreshToken } = tokens
+    await setJwtCookie("accessToken", accessToken)   // ✅ writes to Next.js response
+    await setJwtCookie("refreshToken", refreshToken)
+  }
+
+  return userData as AuthUser
 })

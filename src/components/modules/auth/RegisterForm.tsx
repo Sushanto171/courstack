@@ -22,12 +22,13 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
-import { userRegisterAction } from "@/actions/auth"
+import { loginAction, userRegisterAction } from "@/actions/auth"
 import { LoadingButton } from "@/components/shared/LoadingButton"
 import { showError, showSuccess } from "@/lib/toast"
 import { cn } from "@/lib/utils"
 import { useAppDispatch } from "@/redux/hooks"
 import { userRegisterSchema, UserRegisterValues } from "@/zod/auth"
+import { setUser } from "@/redux/features/auth/authSlice"
 
 
 
@@ -49,6 +50,11 @@ export default function RegisterForm() {
     if (result.success) {
       showSuccess("Account created.")
       form.reset()
+      const res = await loginAction(values)
+      if (res.success) {
+        console.log(res.data)
+        dispatch(setUser(res.data))
+      }
     } else {
       showError(result.message)
     }
