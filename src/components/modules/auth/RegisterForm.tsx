@@ -1,9 +1,5 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { School } from "lucide-react"
-import Link from "next/link"
-import { useForm } from "react-hook-form"
 import { Card, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -12,6 +8,10 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@/components/ui/radio-group"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { School } from "lucide-react"
+import Link from "next/link"
+import { useForm } from "react-hook-form"
 
 import {
   Form,
@@ -22,14 +22,17 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
+import { userRegisterAction } from "@/actions/auth"
 import { LoadingButton } from "@/components/shared/LoadingButton"
+import { showError, showSuccess } from "@/lib/toast"
 import { cn } from "@/lib/utils"
+import { useAppDispatch } from "@/redux/hooks"
 import { userRegisterSchema, UserRegisterValues } from "@/zod/auth"
 
 
 
 export default function RegisterForm() {
-
+  const dispatch = useAppDispatch()
   const form = useForm<UserRegisterValues>({
     resolver: zodResolver(userRegisterSchema),
     defaultValues: {
@@ -41,8 +44,15 @@ export default function RegisterForm() {
     },
   })
 
-  function onSubmit(values: UserRegisterValues) {
-    console.log(values)
+  async function onSubmit(values: UserRegisterValues) {
+    const result = await userRegisterAction(values)
+    if (result.success) {
+      showSuccess("Account created.")
+      form.reset()
+    } else {
+      showError(result.message)
+    }
+
   }
 
   const role = form.watch("role")
@@ -78,7 +88,6 @@ export default function RegisterForm() {
               render={({ field }) => (
                 <FormItem className="space-y-3">
                   <FormLabel>I am joining as</FormLabel>
-
                   <FormControl>
                     <RadioGroup
                       value={field.value}
