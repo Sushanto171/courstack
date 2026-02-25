@@ -129,7 +129,7 @@ NEXTAUTH_SECRET=
 | Role | Email | Password |
 |---|---|---|
 | 🔴 Super Admin | `superadmin@courstack.com` | `SuperSecret123!` |
-| 🟠 Admin | `admin@courstack.com` | `Admin@1` |
+| 🟠 Admin | `admin@courstack.com` | `Admin@11` |
 | 🟡 Instructor | `instructor@courstack.com` | `Instructor@1` |
 | 🟢 Student | `student@courstack.com` | `Student@1` |
 
