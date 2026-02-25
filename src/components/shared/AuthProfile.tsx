@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { getDefaultDashboardRoute } from "@/lib/authUtils"
 import { getInitials } from "@/lib/fomat"
 import { AuthUser } from "@/redux/features/auth/authSlice"
 import Link from "next/link"
@@ -59,7 +60,7 @@ export function UserDropdown({ user, onLogout }: Props) {
         {/* MAIN NAV */}
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href="/dashboard">Dashboard</Link>
+            <Link href={getDefaultDashboardRoute(user.role)}>Dashboard</Link>
           </DropdownMenuItem>
 
           <DropdownMenuItem asChild>

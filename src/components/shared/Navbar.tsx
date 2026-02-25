@@ -23,6 +23,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 
 import { logOutAction } from "@/actions/auth"
+import { getDefaultDashboardRoute } from "@/lib/authUtils"
 import { clearUser } from "@/redux/features/auth/authSlice"
 import { useAppDispatch } from "@/redux/hooks"
 import useAuth from "@/redux/hooks/useAuth"
@@ -198,7 +199,7 @@ export function Navbar() {
                 </div>
               ) : (
                 <>
-                  <Link href="/dashboard">
+                  <Link href={getDefaultDashboardRoute(user.role)}>
                     <Button className="w-full">Open Dashboard</Button>
                   </Link>
 

@@ -30,7 +30,8 @@ export async function setJwtCookie(name: string, token: string) {
 }
 
 
-export function getDecodedToken(token: string): JwtPayload | null {
+export function getDecodedToken(token: string | null): JwtPayload | null {
+  if (!token) return null
   try {
     return jwtDecode<JwtPayload>(token)
   } catch (error) {

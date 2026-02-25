@@ -3,6 +3,7 @@ import { loginAction } from '@/actions/auth';
 import { LoadingButton } from '@/components/shared/LoadingButton';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { getDefaultDashboardRoute } from '@/lib/authUtils';
 import { showError, showSuccess } from '@/lib/toast';
 import { setError, setLoading, setUser } from '@/redux/features/auth/authSlice';
 import { useAppDispatch } from '@/redux/hooks';
@@ -25,7 +26,7 @@ export default function LoginForm() {
     const res = await loginAction(values)
     if (res.success) {
       dispatch(setUser(res.data))
-      router.push("/dashboard")
+      router.push(getDefaultDashboardRoute(res.data.role));
       showSuccess("Login success");
     } else {
       dispatch(setError(res.message))
