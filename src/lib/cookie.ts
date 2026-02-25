@@ -38,3 +38,14 @@ export function getDecodedToken(token: string): JwtPayload | null {
     return null
   }
 }
+
+
+export const getCookie = async (name: string) => {
+  const cookieStore = await cookies();
+  return cookieStore.get(name)?.value || null;
+};
+
+export const deleteCookie = async (key: string) => {
+  const cookieStore = await cookies();
+  cookieStore.delete(key);
+};

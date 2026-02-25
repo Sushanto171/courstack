@@ -1,3 +1,5 @@
+import { getCookie } from "./cookie";
+
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:5000/api/v1"
 
@@ -10,11 +12,21 @@ const serverFetchHelper = async (
   options: ServerFetchOptions = {}
 ): Promise<Response> => {
 
-  const { headers, isMultipart, body, ...rest } = options
+  const { headers, isMultipart, body, ...rest } = options;
+
+  const accessToken = await getCookie("accessToken");
+  const refreshToken = await getCookie("refreshToken");
+
+  const cookieHeader = [
+    accessToken && `accessToken=${accessToken}`,
+    refreshToken && `refreshToken=${refreshToken}`,
+  ]
+    .filter(Boolean)
+    .join("; ");
+
 
   const finalHeaders: HeadersInit = {
-    ...(isMultipart ? {} : { "Content-Type": "application/json" }),
-    ...(headers || {}),
+    ...(isMultipart ? {} : { "Content-Type": "application/json", }),
   }
 
   const finalBody =
@@ -24,7 +36,10 @@ const serverFetchHelper = async (
 
   return fetch(`${baseUrl}${endpoint}`, {
     credentials: "include",
-    headers: finalHeaders,
+    headers: {
+      ...finalHeaders,
+      ...(cookieHeader ? { Cookie: cookieHeader } : {}),
+    },
     body: finalBody,
     ...rest,
   })

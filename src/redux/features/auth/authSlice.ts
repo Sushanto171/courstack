@@ -8,10 +8,11 @@ export type AuthUser = {
   name: string
   email: string
   role: Role
-} | null
+  profileURL?: string
+} 
 
 type AuthState = {
-  user: AuthUser
+  user: AuthUser | null
   loading: boolean
   initialLoading: boolean
   error: string | null
