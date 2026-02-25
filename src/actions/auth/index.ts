@@ -1,12 +1,13 @@
 "use server"
 
 import catchAsync from "@/lib/catchAsync"
-import { setJwtCookie } from "@/lib/cookie"
+import { deleteCookie, setJwtCookie } from "@/lib/cookie"
 
 import { handleApiResponse } from "@/lib/handleApiResponse"
 import { serverFetch } from "@/lib/server-fetch"
 import { AuthUser } from "@/redux/features/auth/authSlice"
 import { UserLoginValues, UserRegisterValues } from "@/zod/auth"
+import { redirect } from "next/navigation"
 
 
 export const userRegisterAction = catchAsync(async (payload: UserRegisterValues,) => {
@@ -22,7 +23,7 @@ export const loginAction = catchAsync(async (payload: UserLoginValues) => {
     body: JSON.stringify(payload),
   })
 
-  const json = await res.json() // ✅ only called once
+  const json = await res.json()
 
   if (!res.ok) {
     throw new Error(json.message || "Login failed.")
@@ -32,9 +33,26 @@ export const loginAction = catchAsync(async (payload: UserLoginValues) => {
 
   if (tokens) {
     const { accessToken, refreshToken } = tokens
-    await setJwtCookie("accessToken", accessToken)   // ✅ writes to Next.js response
+    await setJwtCookie("accessToken", accessToken)
     await setJwtCookie("refreshToken", refreshToken)
   }
 
   return userData as AuthUser
+})
+
+export const getCurrentUser = catchAsync(async () => {
+  const res = await serverFetch.get("/auth/me");
+
+  if (!res.ok) {
+    return null
+  }
+
+  const { data } = await res.json()
+  return data
+})
+
+export const logOutAction = catchAsync(async () => {
+  await deleteCookie("accessToken");
+  await deleteCookie("refreshToken");
+  redirect("/login")
 })

@@ -30,7 +30,8 @@ export async function setJwtCookie(name: string, token: string) {
 }
 
 
-export function getDecodedToken(token: string): JwtPayload | null {
+export function getDecodedToken(token: string | null): JwtPayload | null {
+  if (!token) return null
   try {
     return jwtDecode<JwtPayload>(token)
   } catch (error) {
@@ -38,3 +39,14 @@ export function getDecodedToken(token: string): JwtPayload | null {
     return null
   }
 }
+
+
+export const getCookie = async (name: string) => {
+  const cookieStore = await cookies();
+  return cookieStore.get(name)?.value || null;
+};
+
+export const deleteCookie = async (key: string) => {
+  const cookieStore = await cookies();
+  cookieStore.delete(key);
+};

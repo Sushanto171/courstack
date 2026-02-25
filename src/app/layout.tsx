@@ -1,8 +1,12 @@
+import { getCurrentUser } from "@/actions/auth";
 import StoreProvider from "@/provider/StoreProvider";
+import { AuthUser } from "@/redux/features/auth/authSlice";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
+import { RootSpinner } from "@/components/shared/rootSpinner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,20 +23,28 @@ export const metadata: Metadata = {
   description: "A modern learning management system built with Next.js",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const res = await getCurrentUser();
+  let user: AuthUser | null = null
+  if (res.success) {
+    user = res.data
+  }
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <StoreProvider>
+        <StoreProvider initialUser={user}>
           <Toaster richColors position="top-right" />
-
-          {children}
+          <Suspense fallback={<RootSpinner/>}>
+            {children}
+          </Suspense>
         </StoreProvider>
       </body>
     </html>
