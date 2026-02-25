@@ -11,7 +11,7 @@ import { userLoginSchema, UserLoginValues } from '@/zod/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from "react-hook-form";
 
@@ -20,13 +20,15 @@ export default function LoginForm() {
   const form = useForm<UserLoginValues>({ defaultValues: { email: "", password: "" }, resolver: zodResolver(userLoginSchema) })
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter()
+  const searchParam = useSearchParams();
+  const redirect = searchParam.get("redirect")
 
   const handleSubmit = async (values: UserLoginValues) => {
     dispatch(setLoading(true))
     const res = await loginAction(values)
     if (res.success) {
       dispatch(setUser(res.data))
-      router.push(getDefaultDashboardRoute(res.data.role));
+      router.push(redirect || getDefaultDashboardRoute(res.data.role));
       showSuccess("Login success");
     } else {
       dispatch(setError(res.message))
