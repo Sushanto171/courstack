@@ -22,7 +22,7 @@ export const loginAction = catchAsync(async (payload: UserLoginValues) => {
     body: JSON.stringify(payload),
   })
 
-  const json = await res.json() // ✅ only called once
+  const json = await res.json() 
 
   if (!res.ok) {
     throw new Error(json.message || "Login failed.")
@@ -32,7 +32,7 @@ export const loginAction = catchAsync(async (payload: UserLoginValues) => {
 
   if (tokens) {
     const { accessToken, refreshToken } = tokens
-    await setJwtCookie("accessToken", accessToken)   // ✅ writes to Next.js response
+    await setJwtCookie("accessToken", accessToken)  
     await setJwtCookie("refreshToken", refreshToken)
   }
 

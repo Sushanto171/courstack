@@ -105,30 +105,6 @@ export default function LoginPage() {
             </div>
 
             <LoginForm />
-
-            {/* Divider */}
-            {/* <div className="relative flex py-2 items-center">
-              <div className="flex-grow border-t border-slate-200 dark:border-slate-700" />
-              <span className="flex-shrink-0 mx-4 text-slate-400 text-sm font-medium">
-                Or sign in with
-              </span>
-              <div className="flex-grow border-t border-slate-200 dark:border-slate-700" />
-            </div> */}
-
-            {/* Social Buttons */}
-            {/* <div className="grid grid-cols-3 gap-3">
-              {[
-                { name: "Google", logo: "https://lh3.googleusercontent.com/aida-public/AB6AXuBVa1L7JIvfa1kplcfm7pDvXdlVidSQndnKw-CM5gAbKm9IZU1aNKDm3S8uRMdus_lqEzOHhgMZzam0pwsET-fApVbmAjkkYBCkBDcK5OghvVKzEz9_kicmTNenzTFGjwioYUnMfKwAuJn8rfuJJup_6jqKXfv-gSkBuTMR5Fy6BLY_d_bPiubz6439kkuj8N9t7JUMFuO4OGw21DeFkv2vfAR2r37Qn_TyCTdGC3yPIxTLLjwX2d0oA9L5GNWARFkIxq-lj7wnDqc" },
-                { name: "GitHub", logo: "https://lh3.googleusercontent.com/aida-public/AB6AXuCzqAmbWvUJSj-ok9mbTotgEVontPgLroDTQi-hOeGoMKhGV28olf9vvrNizINIDngwiFocIaRNHST4I3ahxG88BluChx8WcKzcOFcL1XeH8OVSCNZGxNBVnHx-0yUBVUbIJamnuwUHRSF8SWTFjh40GlCnUNv2NiIGrhp4XC3jnZEGQ5A7Szywz1RjGXjQr-PYA1tzzSwAUSl_LsAoKGvl9XugyLgex0s4Sqf9ais068n5cOU41KR1baG-h4xrFdw8xCDFa7UDVZE" },
-                { name: "Microsoft", logo: "https://lh3.googleusercontent.com/aida-public/AB6AXuDaqJV3NzoJqTuaNJA1sQ1aFaDajApyeEafi7eUePa87D1b-aI0vjtEvreVDL-mrx6hzeZavXX1cSCdfX0AEmawOJxDVQRewWLgKsibxcVz8kR6gjwUZ3XNVhSkygU1x775dNW567mm4awtvyGQQfF6URX7xf_Md_6krgzBpZcana7B4BCpOdktEaWaLapM0oEyQHXzlcaoeC3wpEpaUXENMg6aa8KWa6iAWWnDLTkhHm0OlOQ1JAdaqHrv283HWJknjNN5msuyXE" },
-              ].map((provider) => (
-                <Button key={provider.name} variant="outline" className="flex items-center justify-center h-12">
-                  <Image src={provider.logo} alt={`${provider.name} Logo`} width={20} height={20} className="mr-2" />
-                  {provider.name}
-                </Button>
-              ))}
-            </div> */}
-
             <div className="text-center text-sm text-slate-600 dark:text-slate-400 mt-4">
               Don&apos;t have an account?{" "}
               <Link className="font-bold text-primary hover:text-primary-hover transition-colors" href="/register">

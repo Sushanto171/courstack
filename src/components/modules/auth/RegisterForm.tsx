@@ -9,9 +9,9 @@ import {
   RadioGroupItem,
 } from "@/components/ui/radio-group"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { School } from "lucide-react"
+import { Eye, EyeOff, School } from "lucide-react"
 import Link from "next/link"
-import { useForm } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 
 import {
   Form,
@@ -26,13 +26,15 @@ import { loginAction, userRegisterAction } from "@/actions/auth"
 import { LoadingButton } from "@/components/shared/LoadingButton"
 import { showError, showSuccess } from "@/lib/toast"
 import { cn } from "@/lib/utils"
+import { setUser } from "@/redux/features/auth/authSlice"
 import { useAppDispatch } from "@/redux/hooks"
 import { userRegisterSchema, UserRegisterValues } from "@/zod/auth"
-import { setUser } from "@/redux/features/auth/authSlice"
+import { useState } from "react"
 
 
 
 export default function RegisterForm() {
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useAppDispatch()
   const form = useForm<UserRegisterValues>({
     resolver: zodResolver(userRegisterSchema),
@@ -52,7 +54,6 @@ export default function RegisterForm() {
       form.reset()
       const res = await loginAction(values)
       if (res.success) {
-        console.log(res.data)
         dispatch(setUser(res.data))
       }
     } else {
@@ -61,7 +62,7 @@ export default function RegisterForm() {
 
   }
 
-  const role = form.watch("role")
+  const role = useWatch({ control: form.control, name: "role" })
 
   return (
     <div className="p-8 lg:p-12">
@@ -100,7 +101,6 @@ export default function RegisterForm() {
                       onValueChange={field.onChange}
                       className="grid sm:grid-cols-2 gap-4"
                     >
-
                       <label>
                         <Card className={cn("cursor-pointer",
                           role === "STUDENT" && "border-primary bg-primary/10"
@@ -171,7 +171,7 @@ export default function RegisterForm() {
               )}
             />
 
-            {/* PASSWORD */}
+            {/* password */}
             <FormField
               control={form.control}
               name="password"
@@ -179,7 +179,25 @@ export default function RegisterForm() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Create password" {...field} />
+                    <div className="relative">
+                      <Input
+                        placeholder='******'
+                        type={showPassword ? "text" : "password"}
+                        {...field}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute cursor-pointer right-3 top-1/2 -translate-y-1/2"
+                      >
+                        {
+                          showPassword ?
+
+                            <Eye className="h-4 w-4" /> :
+                            <EyeOff className="h-4 w-4" />
+                        }
+                      </button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
