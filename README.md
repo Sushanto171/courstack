@@ -2,7 +2,7 @@
 
 > A production-grade Learning Management System frontend built with Next.js, TypeScript, Redux Toolkit, and Tailwind CSS. Designed for scalability, clean architecture, and an exceptional user experience.
 
-🌐 **Live App:** [https://courstack.vercel.app](https://courstack.vercel.app) &nbsp;|&nbsp; 📦 **Repo:** [github.com/Sushanto171/courstack](https://github.com/Sushanto171/courstack) &nbsp;|&nbsp; 🔗 **Backend API:** [https://courstakc-backend.vercel.app](https://courstakc-backend.vercel.app)
+🌐 **Live App:** [https://courstack.vercel.app](https://courstack.vercel.app) &nbsp;|&nbsp; 📦 **Repo:** [github.com/Sushanto171/courstack](https://github.com/Sushanto171/courstack) &nbsp;|&nbsp; 🔗 **Backend API:** [https://courstack-backend.vercel.app](https://courstack-backend.vercel.app)
 
 ---
 
