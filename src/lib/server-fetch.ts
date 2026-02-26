@@ -11,7 +11,6 @@ const serverFetchHelper = async (
   endpoint: string,
   options: ServerFetchOptions = {}
 ): Promise<Response> => {
-
   const { headers, isMultipart, body, ...rest } = options;
 
   const accessToken = await getCookie("accessToken");
