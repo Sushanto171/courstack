@@ -1,5 +1,8 @@
-import { jwtDecode } from "jwt-decode"
-import { cookies } from "next/headers"
+import { AuthUser } from "@/redux/features/auth/authSlice";
+import { jwtVerify } from "jose";
+import { jwtDecode } from "jwt-decode";
+import { cookies } from "next/headers";
+
 
 export interface JwtPayload {
   id: string
@@ -29,14 +32,15 @@ export async function setJwtCookie(name: string, token: string) {
   }
 }
 
+export async function verifyToken(token: string | null) {
+  if (!token) return null;
 
-export function getDecodedToken(token: string | null): JwtPayload | null {
-  if (!token) return null
   try {
-    return jwtDecode<JwtPayload>(token)
-  } catch (error) {
-    console.error("Invalid token", error)
-    return null
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    const { payload } = await jwtVerify(token, secret);
+    return payload as AuthUser;
+  } catch {
+    return null;
   }
 }
 
