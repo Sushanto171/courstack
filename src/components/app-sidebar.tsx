@@ -1,4 +1,3 @@
-"use client"
 
 import {
   AudioWaveform,
@@ -15,8 +14,7 @@ import {
 } from "lucide-react"
 import * as React from "react"
 
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
+import { getCurrentUser } from "@/actions/auth"
 import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
@@ -26,8 +24,6 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
-import Logo from "./shared/Logo"
-import { getCurrentUser } from "@/actions/auth"
 import { redirect } from "next/navigation"
 
 // This is sample data.
@@ -35,7 +31,7 @@ const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    photoURL: "/avatars/shadcn.jpg",
   },
   teams: [
     {
@@ -162,10 +158,10 @@ const data = {
 
 export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const getUser = await getCurrentUser()
-  // if(!getUser.success){
-  //   redirect("/login")
-  // }
-
+  if (!getUser.success) {
+    redirect("/login")
+  }
+  data.user = getUser.data;
   // console.log(getUser)
   console.log("Dashboard sidebar")
   return (
@@ -180,8 +176,6 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
 
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

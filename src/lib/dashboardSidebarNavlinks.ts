@@ -1,10 +1,11 @@
-import { HandCoins, ListVideo, LucideIcon, Settings2, Users2 } from "lucide-react";
+import { HandCoins, ListVideo, LucideIcon, Settings2, Users, Users2 } from "lucide-react";
 
 export interface ISidebarNavLinks {
   title: string;
   icon: LucideIcon;
+  url?: string;
   isActive?: boolean;
-  items: {
+  items?: {
     title: string;
     url: string;
   }[]
@@ -68,13 +69,86 @@ export const superAdminNavLinks: ISidebarNavLinks[] = [
     ]
   },
   {
-    title: "Payments",
+    title: "Revenue",
     icon: HandCoins,
+    url: "/revenue"
+  }
+];
+
+
+export const adminNavLinks: ISidebarNavLinks[] = [
+  {
+    title: "User Managements",
+    icon: Users2,
     items: [
       {
-        title: "Payment",
-        url: "/payments"
-      }
+        title: "All Users",
+        url: "/users"
+      },
     ]
+  },
+  {
+    title: "Course Managements",
+    icon: ListVideo,
+    items: [
+      {
+        title: "All Courses",
+        url: "/courses"
+      },
+      {
+        title: "All Categories",
+        url: "/category"
+      },
+      {
+        title: "Enrollments",
+        url: "/enrollments"
+      },
+    ]
+  },
+  {
+    title: "Revenue",
+    icon: HandCoins,
+    url: "/revenue"
+  }
+]
+
+
+export const instructorNavLinks: ISidebarNavLinks[] = [
+  {
+    title: "Courses",
+    icon: Users2,
+    items: [
+      {
+        title: "My Courses",
+        url: "/my-courses"
+      },
+      {
+        title: "Make Course",
+        url: "/create-course"
+      },
+    ]
+  },
+  {
+    title: "Students",
+    icon: Users,
+    items: [
+      {
+        title: "All students",
+        url: "/students"
+      },
+      {
+        title: "All Categories",
+        url: "/category"
+      },
+      {
+        title: "Enrollments",
+        url: "/enrollments"
+      },
+    ]
+  },
+  {
+    title: "Earnings",
+    icon: HandCoins,
+    url:"/earnings"
   }
 ]

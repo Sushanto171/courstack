@@ -48,7 +48,7 @@ export const getCurrentUser = catchAsync(async () => {
   }
 
   const { data } = await res.json()
-  return data
+  return data as AuthUser
 })
 
 export const logOutAction = catchAsync(async () => {
