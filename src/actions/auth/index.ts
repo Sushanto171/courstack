@@ -1,7 +1,7 @@
 "use server"
 
 import catchAsync from "@/lib/catchAsync"
-import { deleteCookie, setJwtCookie } from "@/lib/cookie"
+import { deleteCookie, extractCookieToHeader, setJwtCookie } from "@/lib/cookie"
 
 import { handleApiResponse } from "@/lib/handleApiResponse"
 import { serverFetch } from "@/lib/server-fetch"
@@ -29,12 +29,17 @@ export const loginAction = catchAsync(async (payload: UserLoginValues) => {
     throw new Error(json.message || "Login failed.")
   }
 
-  const { tokens, userData } = json.data
+  const { userData } = json.data
 
-  if (tokens) {
-    const { accessToken, refreshToken } = tokens
-    await setJwtCookie("accessToken", accessToken)
-    await setJwtCookie("refreshToken", refreshToken)
+  const accessToken = extractCookieToHeader(res, "accessToken");
+  const refreshToken = extractCookieToHeader(res, "refreshToken");
+
+  if (!accessToken || !refreshToken) throw new Error("Login failed! Please try again.")
+
+  if (accessToken && refreshToken) {
+    await setJwtCookie("accessToken", accessToken["accessToken"] as string, accessToken["Max-Age"]);
+
+    await setJwtCookie("refreshToken", refreshToken["refreshToken"] as string, refreshToken["Max-Age"]);
   }
 
   return userData as AuthUser

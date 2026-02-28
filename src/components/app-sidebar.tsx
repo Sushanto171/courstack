@@ -1,171 +1,37 @@
+// "use client"
 
-import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  School,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react"
-import * as React from "react"
+import Link from "next/link"
+// import { usePathname } from "next/navigation"
+import { School } from "lucide-react"
 
-import { getCurrentUser } from "@/actions/auth"
 import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import Link from "next/link"
-import { redirect } from "next/navigation"
 
-// This is sample data.
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    photoURL: "/avatars/shadcn.jpg",
-  },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
-  navMain: [
-    {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
+import { AuthUser } from "@/redux/features/auth/authSlice"
+import { ISidebarNavLinks } from "@/lib/dashboardSidebarNavlinks"
+
+interface Props {
+  user: AuthUser
+  navLinks: ISidebarNavLinks[]
 }
 
-export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const getUser = await getCurrentUser()
-  if (!getUser.success) {
-    redirect("/login")
-  }
-  data.user = getUser.data;
-  // console.log(getUser)
-  console.log("Dashboard sidebar")
+export function AppSidebar({ user, navLinks }: Props) {
+  // const pathname = usePathname()
+
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon">
+      {/* HEADER */}
       <SidebarHeader>
         <Link href="/" className="flex items-center gap-2 font-semibold">
           <div className="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
@@ -173,13 +39,68 @@ export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sideb
           </div>
           <span className="text-lg tracking-tight">Courstack</span>
         </Link>
-
       </SidebarHeader>
-      <SidebarContent>
+
+      {/* CONTENT */}
+      <SidebarContent className="px-2">
+        <SidebarMenu>
+          {navLinks.map((nav) => {
+            // const isParentActive =
+            //   nav.url && pathname.startsWith(nav.url)
+
+            return (
+              <SidebarMenuItem key={nav.title}>
+                {nav.url ? (
+                  <SidebarMenuButton
+                    asChild
+                    // isActive={isParentActive}
+                  >
+                    <Link href={nav.url}>
+                      <nav.icon className="size-4" />
+                      <span>{nav.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                ) : (
+                  <div className="flex items-center gap-2 px-2 py-1 text-sm font-medium text-muted-foreground">
+                    <nav.icon className="size-4" />
+                    <span>{nav.title}</span>
+                  </div>
+                )}
+
+                {/* Nested Items */}
+                {nav.items?.length ? (
+                  <SidebarMenuSub>
+                    {nav.items.map((item) => {
+                      // const isSubActive =
+                      //   pathname === item.url
+
+                      return (
+                        <SidebarMenuSubItem key={item.url}>
+                          <SidebarMenuButton
+                            asChild
+                            size="sm"
+                            // isActive={isSubActive}
+                          >
+                            <Link href={item.url}>
+                              {item.title}
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuSubItem>
+                      )
+                    })}
+                  </SidebarMenuSub>
+                ) : null}
+              </SidebarMenuItem>
+            )
+          })}
+        </SidebarMenu>
       </SidebarContent>
+
+      {/* FOOTER */}
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
+
       <SidebarRail />
     </Sidebar>
   )

@@ -11,7 +11,7 @@ const serverFetchHelper = async (
   endpoint: string,
   options: ServerFetchOptions = {}
 ): Promise<Response> => {
-  const { headers, isMultipart, body, ...rest } = options;
+  const {  isMultipart, body, ...rest } = options;
 
   const accessToken = await getCookie("accessToken");
   const refreshToken = await getCookie("refreshToken");
@@ -22,7 +22,6 @@ const serverFetchHelper = async (
   ]
     .filter(Boolean)
     .join("; ");
-
 
   const finalHeaders: HeadersInit = {
     ...(isMultipart ? {} : { "Content-Type": "application/json", }),

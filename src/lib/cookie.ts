@@ -1,8 +1,6 @@
 import { AuthUser } from "@/redux/features/auth/authSlice";
 import { jwtVerify } from "jose";
-import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
-
 
 export interface JwtPayload {
   id: string
@@ -11,14 +9,15 @@ export interface JwtPayload {
   role: string
   iat: number
   exp: number
-}
+};
 
+type CookieHeader = {
+  [key: string]: string | number;
+  "Max-Age": number;
+} | null;
 
-
-export async function setJwtCookie(name: string, token: string) {
+export async function setJwtCookie(name: string, token: string, maxAge:number) {
   try {
-    const payload = jwtDecode<JwtPayload>(token)
-    const maxAge = payload.exp - Math.floor(Date.now() / 1000)
     const cookie = await cookies()
     cookie.set(name, token, {
       httpOnly: true,
@@ -54,3 +53,27 @@ export const deleteCookie = async (key: string) => {
   const cookieStore = await cookies();
   cookieStore.delete(key);
 };
+
+
+export const extractCookieToHeader = (res: Response, name: string): CookieHeader => {
+  const rawCookie = res.headers.getSetCookie?.();
+  if (!rawCookie) return null;
+
+  const parsedTokens = rawCookie.map(cookie =>
+    Object.fromEntries(
+      cookie.split(";").map(part => {
+        const [key, value] = part.trim().split("=");
+        return [key, value ?? ""];
+      })
+    )
+  );
+
+  const target = parsedTokens.find(t => t[name]);
+  if (!target) return null;
+
+  return {
+    [name]: target[name]!,
+    "Max-Age": Number(target["Max-Age"] ?? 0),
+  };
+};
+

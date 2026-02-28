@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { getDefaultDashboardRoute } from "@/lib/authUtils"
-import { getInitials } from "@/lib/fomat"
+import { getInitials } from "@/lib/format"
 import { AuthUser } from "@/redux/features/auth/authSlice"
 import Link from "next/link"
 
