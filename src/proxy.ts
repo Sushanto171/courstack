@@ -10,21 +10,25 @@ import { Role } from "./types/user";
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set("x-pathname", pathname)
+  
 
   const token = await getCookie("accessToken");
-  const user =await verifyToken(token) as AuthUser ;
+  const user = await verifyToken(token) as AuthUser;
   const userRole: Role | null = user?.role ?? null;
   const routeOwner = getRouteOwner(pathname);
   const isAuth = isAuthRoute(pathname);
 
   if (!routeOwner && !isAuth) {
-    return NextResponse.next();
+    return NextResponse.next({ headers: requestHeaders })
   }
 
   if (isAuth) {
-    if (!userRole) return NextResponse.next();
+    if (!userRole) return NextResponse.next({ headers: requestHeaders })
     return NextResponse.redirect(
-      new URL(getDefaultDashboardRoute(userRole), request.url)
+      new URL(getDefaultDashboardRoute(userRole), request.url),
+
     );
   }
 
@@ -40,7 +44,7 @@ export async function proxy(request: NextRequest) {
     );
   }
 
-  return NextResponse.next();
+  return NextResponse.next({ headers: requestHeaders });
 }
 export const config = {
   matcher: [

@@ -1,9 +1,8 @@
 import { Role } from '@/types/user';
-import { Award, ChartNoAxesCombined, DollarSign, GraduationCap, HandCoins, ListVideo, LucideIcon, Settings2, TextSearch, Users, Users2 } from "lucide-react";
 
 export interface ISidebarNavLinks {
   title: string;
-  icon: LucideIcon;
+  icon: string;
   url?: string;
   isActive?: boolean;
   items?: {
@@ -17,7 +16,7 @@ export interface ISidebarNavLinks {
 export const commonNavLinks: ISidebarNavLinks[] = [
   {
     title: "Quick Links",
-    icon: Settings2,
+    icon: "Settings2",
     items: [
       {
         title: "Profile",
@@ -39,7 +38,7 @@ export const commonNavLinks: ISidebarNavLinks[] = [
 export const superAdminNavLinks: ISidebarNavLinks[] = [
   {
     title: "User Managements",
-    icon: Users2,
+    icon: "Users2",
     items: [
       {
         title: "All Users",
@@ -53,7 +52,7 @@ export const superAdminNavLinks: ISidebarNavLinks[] = [
   },
   {
     title: "Course Managements",
-    icon: ListVideo,
+    icon: "ListVideo",
     items: [
       {
         title: "All Courses",
@@ -71,7 +70,7 @@ export const superAdminNavLinks: ISidebarNavLinks[] = [
   },
   {
     title: "Revenue",
-    icon: HandCoins,
+    icon: "HandCoins",
     url: "revenue"
   }
 ];
@@ -80,17 +79,13 @@ export const superAdminNavLinks: ISidebarNavLinks[] = [
 export const adminNavLinks: ISidebarNavLinks[] = [
   {
     title: "User Managements",
-    icon: Users2,
-    items: [
-      {
-        title: "All Users",
-        url: "users"
-      },
-    ]
+    icon: "Users2",
+    url: "users",
+    isActive: true,
   },
   {
     title: "Course Managements",
-    icon: ListVideo,
+    icon: "ListVideo",
     items: [
       {
         title: "All Courses",
@@ -108,7 +103,7 @@ export const adminNavLinks: ISidebarNavLinks[] = [
   },
   {
     title: "Revenue",
-    icon: HandCoins,
+    icon: "HandCoins",
     url: "revenue"
   }
 ]
@@ -117,68 +112,64 @@ export const adminNavLinks: ISidebarNavLinks[] = [
 export const instructorNavLinks: ISidebarNavLinks[] = [
   {
     title: "Courses",
-    icon: Users2,
+    icon: "Users2",
     items: [
       {
         title: "My Courses",
-        url: "/my-courses"
+        url: "my-courses"
       },
       {
         title: "Make Course",
-        url: "/create-course"
+        url: "create-course"
       },
     ]
   },
   {
     title: "Students",
-    icon: Users,
+    icon: "Users",
     items: [
       {
         title: "All students",
-        url: "/students"
-      },
-      {
-        title: "All Categories",
-        url: "/category"
+        url: "students"
       },
       {
         title: "Enrollments",
-        url: "/enrollments"
+        url: "enrollments"
       },
     ]
   },
   {
     title: "Analytics",
-    icon: ChartNoAxesCombined,
-    url: "/analytics"
+    icon: "ChartNoAxesCombined",
+    url: "analytics"
   },
   {
     title: "Earnings",
-    icon: DollarSign,
-    url: "/earnings"
+    icon: "DollarSign",
+    url: "earnings"
   }
 ];
 
 export const studentNavLinks: ISidebarNavLinks[] = [
   {
     title: "My Learning",
-    icon: GraduationCap,
-    url: "/my-learning"
+    icon: "GraduationCap",
+    url: "my-learning"
   },
   {
     title: "Browse Courses",
-    icon: TextSearch,
+    icon: "TextSearch",
     url: "/courses"
   },
   {
     title: "Achievements",
-    icon: Award,
-    url: "/achievements"
+    icon: "Award",
+    url: "achievements"
   },
   {
     title: "Payments",
-    icon: DollarSign,
-    url: "/payments"
+    icon: "DollarSign",
+    url: "payments"
   }
 ]
 

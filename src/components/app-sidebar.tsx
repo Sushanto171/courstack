@@ -1,8 +1,6 @@
-// "use client"
-
-import Link from "next/link"
-// import { usePathname } from "next/navigation"
+"use client"
 import { School } from "lucide-react"
+import Link from "next/link"
 
 import { NavUser } from "@/components/nav-user"
 import {
@@ -11,15 +9,18 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuItem,
   SidebarMenuSub,
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
 
-import { AuthUser } from "@/redux/features/auth/authSlice"
 import { ISidebarNavLinks } from "@/lib/dashboardSidebarNavlinks"
+import { AuthUser } from "@/redux/features/auth/authSlice"
+import { usePathname } from "next/navigation"
+import { getIconComponent } from "./shared/getIconComponent"
+
 
 interface Props {
   user: AuthUser
@@ -27,8 +28,7 @@ interface Props {
 }
 
 export function AppSidebar({ user, navLinks }: Props) {
-  // const pathname = usePathname()
-
+  const pathname = usePathname()
   return (
     <Sidebar collapsible="icon">
       {/* HEADER */}
@@ -45,24 +45,23 @@ export function AppSidebar({ user, navLinks }: Props) {
       <SidebarContent className="px-2">
         <SidebarMenu>
           {navLinks.map((nav) => {
-            // const isParentActive =
-            //   nav.url && pathname.startsWith(nav.url)
-
+            const isParentActive = pathname === `/${user.role.toLowerCase()}/${nav?.url?.replace(/^\//, '')}`
+            const Icon = getIconComponent(nav.icon)
             return (
               <SidebarMenuItem key={nav.title}>
                 {nav.url ? (
                   <SidebarMenuButton
                     asChild
-                    // isActive={isParentActive}
+                    isActive={isParentActive}
                   >
                     <Link href={nav.url}>
-                      <nav.icon className="size-4" />
+                      <Icon className="size-4" />
                       <span>{nav.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 ) : (
                   <div className="flex items-center gap-2 px-2 py-1 text-sm font-medium text-muted-foreground">
-                    <nav.icon className="size-4" />
+                    <Icon className="size-4" />
                     <span>{nav.title}</span>
                   </div>
                 )}
@@ -71,15 +70,14 @@ export function AppSidebar({ user, navLinks }: Props) {
                 {nav.items?.length ? (
                   <SidebarMenuSub>
                     {nav.items.map((item) => {
-                      // const isSubActive =
-                      //   pathname === item.url
-
+                      const isSubActive =
+                        pathname === `/${user.role.toLowerCase()}/${item?.url?.replace(/^\//, '')}`
                       return (
                         <SidebarMenuSubItem key={item.url}>
                           <SidebarMenuButton
                             asChild
                             size="sm"
-                            // isActive={isSubActive}
+                            isActive={isSubActive}
                           >
                             <Link href={item.url}>
                               {item.title}

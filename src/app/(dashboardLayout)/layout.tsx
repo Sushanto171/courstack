@@ -25,13 +25,13 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }>) {
 
-    const getUser = await getCurrentUser()
-    if (!getUser.success) {
-      redirect("/login")
-    }
-    const user = getUser.data as AuthUser ;
+  const getUser = await getCurrentUser()
+  if (!getUser.success) {
+    redirect("/login")
+  }
+  const user = getUser.data as AuthUser;
 
-    const navLinks = getSidebarNavLinks(user.role)
+  const navLinks = getSidebarNavLinks(user.role)
   return (
     <SidebarProvider>
       <AppSidebar user={user} navLinks={navLinks} />
