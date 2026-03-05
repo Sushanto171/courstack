@@ -3,7 +3,6 @@ import { loginAction } from '@/actions/auth';
 import { LoadingButton } from '@/components/shared/LoadingButton';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { getDefaultDashboardRoute } from '@/lib/authUtils';
 import { showError, showSuccess } from '@/lib/toast';
 import { setError, setLoading, setUser } from '@/redux/features/auth/authSlice';
 import { useAppDispatch } from '@/redux/hooks';
@@ -11,24 +10,24 @@ import { userLoginSchema, UserLoginValues } from '@/zod/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from "react-hook-form";
 
 export default function LoginForm() {
   const dispatch = useAppDispatch()
-  const form = useForm<UserLoginValues>({ defaultValues: { email: "", password: "" }, resolver: zodResolver(userLoginSchema) })
+  const form = useForm<UserLoginValues>({ defaultValues: { email: "student@gmail.com", password: "Student@1" }, resolver: zodResolver(userLoginSchema) })
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter()
   const searchParam = useSearchParams();
   const redirect = searchParam.get("redirect")
 
   const handleSubmit = async (values: UserLoginValues) => {
     dispatch(setLoading(true))
+    values = { ...values, redirectTo: redirect as string }
     const res = await loginAction(values)
+
     if (res.success) {
       dispatch(setUser(res.data))
-      router.push(redirect || getDefaultDashboardRoute(res.data.role));
       showSuccess("Login success");
     } else {
       dispatch(setError(res.message))

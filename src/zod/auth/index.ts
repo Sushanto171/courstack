@@ -19,6 +19,7 @@ export const userRegisterSchema = z.object({
 export const userLoginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6, "Minimum 6 characters"),
+  redirectTo: z.string().optional()
 })
 
 export type UserRegisterValues = z.infer<typeof userRegisterSchema>

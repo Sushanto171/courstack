@@ -25,7 +25,7 @@ export default async function DashboardLayout({
   children: React.ReactNode;
 }>) {
 
-  const getUser = await getCurrentUser()
+  const getUser = await getCurrentUser();
   if (!getUser.success) {
     redirect("/login")
   }

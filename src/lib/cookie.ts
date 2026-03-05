@@ -1,3 +1,4 @@
+
 import { AuthUser } from "@/redux/features/auth/authSlice";
 import { jwtVerify } from "jose";
 import { cookies } from "next/headers";
@@ -16,9 +17,10 @@ type CookieHeader = {
   "Max-Age": number;
 } | null;
 
-export async function setJwtCookie(name: string, token: string, maxAge:number) {
+export async function setJwtCookie(name: string, token: string, maxAge: number) {
   try {
     const cookie = await cookies()
+
     cookie.set(name, token, {
       httpOnly: true,
       secure: true,
@@ -38,7 +40,8 @@ export async function verifyToken(token: string | null) {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const { payload } = await jwtVerify(token, secret);
     return payload as AuthUser;
-  } catch {
+  } catch (error) {
+    console.log({ error })
     return null;
   }
 }

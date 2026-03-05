@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getNewAccessToken } from "./actions/auth";
 import {
   getDefaultDashboardRoute,
   getRouteOwner,
@@ -8,14 +9,22 @@ import { getCookie, verifyToken } from "./lib/cookie";
 import { AuthUser } from "./redux/features/auth/authSlice";
 import { Role } from "./types/user";
 
-export async function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest,) {
   const { pathname } = request.nextUrl;
   const requestHeaders = new Headers(request.headers)
   requestHeaders.set("x-pathname", pathname)
-  
 
-  const token = await getCookie("accessToken");
-  const user = await verifyToken(token) as AuthUser;
+
+  let accessToken = request.cookies.get("accessToken")?.value || await getCookie("accessToken");
+  const refreshToken = request.cookies.get("refreshToken")?.value;
+
+  if (!accessToken && refreshToken) {
+    await getNewAccessToken()
+    accessToken = await getCookie("accessToken");
+    return NextResponse.redirect(new URL(pathname, request.url))
+  }
+
+  const user = await verifyToken(accessToken) as AuthUser;
   const userRole: Role | null = user?.role ?? null;
   const routeOwner = getRouteOwner(pathname);
   const isAuth = isAuthRoute(pathname);
@@ -25,10 +34,9 @@ export async function proxy(request: NextRequest) {
   }
 
   if (isAuth) {
-    if (!userRole) return NextResponse.next({ headers: requestHeaders })
+    if (!userRole) return NextResponse.next();
     return NextResponse.redirect(
       new URL(getDefaultDashboardRoute(userRole), request.url),
-
     );
   }
 
@@ -39,6 +47,7 @@ export async function proxy(request: NextRequest) {
   }
 
   if (routeOwner !== "COMMON" && routeOwner !== userRole) {
+    console.log("hit");
     return NextResponse.redirect(
       new URL(getDefaultDashboardRoute(userRole), request.url)
     );

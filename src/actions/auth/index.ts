@@ -1,5 +1,6 @@
 "use server"
 
+import { getDefaultDashboardRoute } from "@/lib/authUtils"
 import catchAsync from "@/lib/catchAsync"
 import { deleteCookie, extractCookieToHeader, setJwtCookie } from "@/lib/cookie"
 
@@ -19,10 +20,10 @@ export const userRegisterAction = catchAsync(async (payload: UserRegisterValues,
 })
 
 export const loginAction = catchAsync(async (payload: UserLoginValues) => {
+  const { redirectTo, ...rest } = payload
   const res = await serverFetch.post("/auth/login", {
-    body: JSON.stringify(payload),
+    body: JSON.stringify(rest),
   })
-
   const json = await res.json()
 
   if (!res.ok) {
@@ -42,22 +43,39 @@ export const loginAction = catchAsync(async (payload: UserLoginValues) => {
     await setJwtCookie("refreshToken", refreshToken["refreshToken"] as string, refreshToken["Max-Age"]);
   }
 
-  return userData as AuthUser
+  redirect(redirectTo || getDefaultDashboardRoute(userData.role));
 })
 
 export const getCurrentUser = catchAsync(async () => {
   const res = await serverFetch.get("/auth/me");
 
-  if (!res.ok) {
-    return null
+  if (res.ok) {
+    const { data } = await res.json()
+    return data as AuthUser
   }
 
-  const { data } = await res.json()
-  return data as AuthUser
+  return null
 })
 
 export const logOutAction = catchAsync(async () => {
   await deleteCookie("accessToken");
   await deleteCookie("refreshToken");
   redirect("/login")
+})
+
+
+export const getNewAccessToken = catchAsync(async () => {
+  const res = await serverFetch.get("/auth/refresh");
+  const accessToken = extractCookieToHeader(res, "accessToken");
+  const refreshToken = extractCookieToHeader(res, "refreshToken");
+
+  if (!accessToken || !refreshToken) return false;
+
+  if (accessToken && refreshToken) {
+    await setJwtCookie("accessToken", accessToken["accessToken"] as string, accessToken["Max-Age"]);
+
+    await setJwtCookie("refreshToken", refreshToken["refreshToken"] as string, refreshToken["Max-Age"]);
+  }
+
+  return true;
 })

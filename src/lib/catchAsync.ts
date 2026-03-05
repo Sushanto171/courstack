@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+
 type CatchAsyncResult<T> =
   | { success: true; data: T, }
   | { success: false; message: string }
