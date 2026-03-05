@@ -33,7 +33,7 @@ export async function setJwtCookie(name: string, token: string, maxAge: number) 
   }
 }
 
-export async function verifyToken(token: string | null) {
+export async function verifyToken(token: string | undefined) {
   if (!token) return null;
 
   try {

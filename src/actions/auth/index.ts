@@ -64,18 +64,3 @@ export const logOutAction = catchAsync(async () => {
 })
 
 
-export const getNewAccessToken = catchAsync(async () => {
-  const res = await serverFetch.get("/auth/refresh");
-  const accessToken = extractCookieToHeader(res, "accessToken");
-  const refreshToken = extractCookieToHeader(res, "refreshToken");
-
-  if (!accessToken || !refreshToken) return false;
-
-  if (accessToken && refreshToken) {
-    await setJwtCookie("accessToken", accessToken["accessToken"] as string, accessToken["Max-Age"]);
-
-    await setJwtCookie("refreshToken", refreshToken["refreshToken"] as string, refreshToken["Max-Age"]);
-  }
-
-  return true;
-})
