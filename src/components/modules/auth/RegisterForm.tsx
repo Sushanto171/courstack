@@ -24,13 +24,11 @@ import {
 
 import { loginAction, userRegisterAction } from "@/actions/auth"
 import { LoadingButton } from "@/components/shared/LoadingButton"
-import { getDefaultDashboardRoute } from "@/lib/authUtils"
 import { showError, showSuccess } from "@/lib/toast"
 import { cn } from "@/lib/utils"
 import { setUser } from "@/redux/features/auth/authSlice"
 import { useAppDispatch } from "@/redux/hooks"
 import { userRegisterSchema, UserRegisterValues } from "@/zod/auth"
-import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 
@@ -38,7 +36,7 @@ import { useState } from "react"
 export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useAppDispatch()
-  const router = useRouter()
+
   const form = useForm<UserRegisterValues>({
     resolver: zodResolver(userRegisterSchema),
     defaultValues: {
@@ -58,7 +56,6 @@ export default function RegisterForm() {
       const res = await loginAction(values)
       if (res.success) {
         dispatch(setUser(res.data))
-        router.push(getDefaultDashboardRoute(res.data.role));
       }
     } else {
       showError(result.message)
