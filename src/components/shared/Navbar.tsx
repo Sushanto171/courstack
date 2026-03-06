@@ -30,11 +30,11 @@ import useAuth from "@/redux/hooks/useAuth"
 import { UserDropdown } from "./AuthProfile"
 
 const categories = [
-  { title: "Frontend", href: "/courses/frontend" },
-  { title: "Backend", href: "/courses/backend" },
-  { title: "Full Stack", href: "/courses/fullstack" },
-  { title: "Management", href: "/courses/management" },
-  { title: "Marketing", href: "/courses/marketing" },
+  { title: "Frontend", href: "/courses?category=frontend" },
+  { title: "Backend", href: "/courses?category=backend" },
+  { title: "Full Stack", href: "/courses?category=fullstack" },
+  { title: "Management", href: "/courses?category=management" },
+  { title: "Marketing", href: "/courses?category=marketing" },
 ]
 
 export function Navbar() {
