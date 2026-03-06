@@ -44,7 +44,7 @@ export function AppSidebar({ user, navLinks }: Props) {
       <SidebarContent className="px-2">
         <SidebarMenu>
           {navLinks.map((nav) => {
-            let isParentActive = pathname === `/${user.role === "STUDENT" ? "" : user.role.toLowerCase()}/${nav?.url?.replace(/^\//, '')}`
+            let isParentActive = pathname === `/${user.role === "SUPER_ADMIN" ? "superadmin" : user.role.toLowerCase()}/${nav?.url?.replace(/^\//, '')}`
             const Icon = getIconComponent(nav.icon);
             if (user.role === "STUDENT") {
               isParentActive = nav.url === pathname.replace("/", "");
@@ -73,7 +73,7 @@ export function AppSidebar({ user, navLinks }: Props) {
                   <SidebarMenuSub>
                     {nav.items.map((item) => {
                       const isSubActive =
-                        pathname === `/${user.role === "STUDENT" ? "" : user.role.toLowerCase()}/${item?.url?.replace(/^\//, '')}`
+                        pathname === `/${user.role === "SUPER_ADMIN" ? "superadmin" : user.role.toLowerCase()}/${item?.url?.replace(/^\//, '')}`
                       return (
                         <SidebarMenuSubItem key={item.url}>
                           <SidebarMenuButton
