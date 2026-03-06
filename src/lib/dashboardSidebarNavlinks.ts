@@ -36,6 +36,17 @@ export const commonNavLinks: ISidebarNavLinks[] = [
 
 
 export const superAdminNavLinks: ISidebarNavLinks[] = [
+
+  {
+    title: "Analytics",
+    icon: "ChartNoAxesCombined",
+    url: "dashboard"
+  },
+  {
+    title: "Revenue",
+    icon: "HandCoins",
+    url: "revenue"
+  },
   {
     title: "User Managements",
     icon: "Users2",
@@ -60,7 +71,7 @@ export const superAdminNavLinks: ISidebarNavLinks[] = [
       },
       {
         title: "All Categories",
-        url: "category"
+        url: "categories"
       },
       {
         title: "Enrollments",
@@ -68,15 +79,15 @@ export const superAdminNavLinks: ISidebarNavLinks[] = [
       },
     ]
   },
-  {
-    title: "Revenue",
-    icon: "HandCoins",
-    url: "revenue"
-  }
 ];
 
 
 export const adminNavLinks: ISidebarNavLinks[] = [
+  {
+    title: "Analytics",
+    icon: "ChartNoAxesCombined",
+    url: "dashboard"
+  },
   {
     title: "User Managements",
     icon: "Users2",
@@ -93,7 +104,7 @@ export const adminNavLinks: ISidebarNavLinks[] = [
       },
       {
         title: "All Categories",
-        url: "category"
+        url: "categories"
       },
       {
         title: "Enrollments",
@@ -110,6 +121,11 @@ export const adminNavLinks: ISidebarNavLinks[] = [
 
 
 export const instructorNavLinks: ISidebarNavLinks[] = [
+  {
+    title: "Analytics",
+    icon: "ChartNoAxesCombined",
+    url: "dashboard"
+  },
   {
     title: "Courses",
     icon: "Users2",
@@ -138,11 +154,7 @@ export const instructorNavLinks: ISidebarNavLinks[] = [
       },
     ]
   },
-  {
-    title: "Analytics",
-    icon: "ChartNoAxesCombined",
-    url: "analytics"
-  },
+
   {
     title: "Earnings",
     icon: "DollarSign",
@@ -154,7 +166,7 @@ export const studentNavLinks: ISidebarNavLinks[] = [
   {
     title: "My Learning",
     icon: "GraduationCap",
-    url: "my-learning"
+    url: "dashboard"
   },
   {
     title: "Browse Courses",

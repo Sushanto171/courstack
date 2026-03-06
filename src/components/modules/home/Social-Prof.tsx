@@ -1,9 +1,9 @@
 import {
-  Globe,
-  Zap,
-  Network,
   Gem,
+  Globe,
+  Network,
   Rocket,
+  Zap,
 } from "lucide-react"
 
 const companies = [
@@ -17,7 +17,7 @@ const companies = [
 export default function SocialProof() {
   return (
     <section className="border-y bg-muted/40">
-      <div className="container py-10 space-y-6">
+      <div className="container mx-auto py-10 space-y-6">
 
         <p className="text-center text-sm font-medium uppercase tracking-wider text-muted-foreground">
           Trusted by industry leaders

@@ -2,7 +2,6 @@
 import { School } from "lucide-react"
 import Link from "next/link"
 
-import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
   SidebarContent,
@@ -30,11 +29,11 @@ interface Props {
 export function AppSidebar({ user, navLinks }: Props) {
   const pathname = usePathname()
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="overflow-hidden">
       {/* HEADER */}
       <SidebarHeader>
         <Link href="/" className="flex items-center gap-2 font-semibold">
-          <div className="flex size-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
+          <div className="flex size-8  items-center justify-center rounded-md bg-primary text-primary-foreground">
             <School size={16} />
           </div>
           <span className="text-lg tracking-tight">Courstack</span>
@@ -45,8 +44,11 @@ export function AppSidebar({ user, navLinks }: Props) {
       <SidebarContent className="px-2">
         <SidebarMenu>
           {navLinks.map((nav) => {
-            const isParentActive = pathname === `/${user.role.toLowerCase()}/${nav?.url?.replace(/^\//, '')}`
-            const Icon = getIconComponent(nav.icon)
+            let isParentActive = pathname === `/${user.role === "SUPER_ADMIN" ? "superadmin" : user.role.toLowerCase()}/${nav?.url?.replace(/^\//, '')}`
+            const Icon = getIconComponent(nav.icon);
+            if (user.role === "STUDENT") {
+              isParentActive = nav.url === pathname.replace("/", "");
+            }
             return (
               <SidebarMenuItem key={nav.title}>
                 {nav.url ? (
@@ -71,7 +73,7 @@ export function AppSidebar({ user, navLinks }: Props) {
                   <SidebarMenuSub>
                     {nav.items.map((item) => {
                       const isSubActive =
-                        pathname === `/${user.role.toLowerCase()}/${item?.url?.replace(/^\//, '')}`
+                        pathname === `/${user.role === "SUPER_ADMIN" ? "superadmin" : user.role.toLowerCase()}/${item?.url?.replace(/^\//, '')}`
                       return (
                         <SidebarMenuSubItem key={item.url}>
                           <SidebarMenuButton
@@ -96,7 +98,7 @@ export function AppSidebar({ user, navLinks }: Props) {
 
       {/* FOOTER */}
       <SidebarFooter>
-        <NavUser user={user} />
+        {/* <NavUser user={user} /> */}
       </SidebarFooter>
 
       <SidebarRail />
