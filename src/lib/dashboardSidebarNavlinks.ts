@@ -154,7 +154,7 @@ export const studentNavLinks: ISidebarNavLinks[] = [
   {
     title: "My Learning",
     icon: "GraduationCap",
-    url: "my-learning"
+    url: "dashboard"
   },
   {
     title: "Browse Courses",
