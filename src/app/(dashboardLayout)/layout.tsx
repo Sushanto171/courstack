@@ -16,6 +16,7 @@ import { getSidebarNavLinks } from "@/lib/dashboardSidebarNavlinks";
 import { AuthUser } from "@/redux/features/auth/authSlice";
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
 
 export default async function DashboardLayout({
   children,
