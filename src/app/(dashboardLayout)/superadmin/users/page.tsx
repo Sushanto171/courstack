@@ -3,6 +3,7 @@ import UsersManagementTable from "@/components/modules/superadmin/UsersManagemen
 import { ManagementPageHeader } from "@/components/shared/ManagementPageHeader";
 import { convertQueryString } from "@/lib/format";
 import { SearchParams } from "@/types/shared";
+import { Suspense } from "react";
 
 export default async function SuperAdminUsersPage({ searchParams }: SearchParams) {
 
@@ -14,7 +15,9 @@ export default async function SuperAdminUsersPage({ searchParams }: SearchParams
   return (
     <section>
       <ManagementPageHeader title="All Users" description="Manage Admins, Instructors and Students" />
-      <UsersManagementTable users={users} />
+      <Suspense fallback="Users fetching...">
+        <UsersManagementTable users={users} />
+      </Suspense>
     </section>
   );
 }
