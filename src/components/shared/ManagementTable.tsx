@@ -31,7 +31,7 @@ export default function ManagementTable<T>({ data, columns, emptyMessage, getRow
 
   return (
     <>
-      <div className="rounded-lg border relative">
+      <div className="rounded-lg border my-6">
 
 
         {/* Refreshing Overlay */}
@@ -44,83 +44,84 @@ export default function ManagementTable<T>({ data, columns, emptyMessage, getRow
           </div>
         )}
 
+        <div className="overflow-x-auto max-h-[calc(100vh-210px)]">
+          <Table >
+            <TableHeader className="sticky top-0 bg-background z-10">
+              <TableRow >
+                {
+                  columns?.map((column, cInx) => (
+                    <TableHead key={cInx} className={column.className}>{column.header}</TableHead>
+                  ))
+                }
+                {hasActions && (
+                  <TableHead className={cn("w-[70px]")}>Actions</TableHead>
+                )}
+              </TableRow>
+            </TableHeader>
 
-        <Table>
-          <TableHeader>
-            <TableRow >
+            <TableBody>
               {
-                columns?.map((column, cInx) => (
-                  <TableHead key={cInx} className={column.className}>{column.header}</TableHead>
-                ))
-              }
-              {hasActions && (
-                <TableHead className={cn("w-[70px]")}>Actions</TableHead>
-              )}
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            {
-              data?.length === 0 ? (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length + (hasActions ? 1 : 0)}
-                    className="text-center py-8 text-muted-foreground"
-                  >
-                    {emptyMessage || "No Records Found."}
-                  </TableCell>
-                </TableRow>
-              ) : (
-                data.map(item => (
-                  <TableRow key={getRowKey(item)}>
-                    {
-                      columns.map((col, inx) => (
-                        <TableCell key={inx} className={col.className}>
-                          {col.getValue(item)}
-                        </TableCell>
-                      ))
-                    }
-                    {hasActions && (
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            {onView && (
-                              <DropdownMenuItem onClick={() => onView(item)}>
-                                <Eye className="mr-2 h-4 w-4" />
-                                View
-                              </DropdownMenuItem>
-                            )}
-                            {onEdit && (
-                              <DropdownMenuItem onClick={() => onEdit(item)}>
-                                <Edit className="mr-2 h-4 w-4" />
-                                Edit
-                              </DropdownMenuItem>
-                            )}
-                            {onDelete && (
-                              <DropdownMenuItem
-                                onClick={() => onDelete(item)}
-                                className="text-destructive"
-                              >
-                                <Trash className="mr-2 h-4 w-4" />
-                                Delete
-                              </DropdownMenuItem>
-                            )}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    )}
+                data?.length === 0 ? (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length + (hasActions ? 1 : 0)}
+                      className="text-center py-8 text-muted-foreground"
+                    >
+                      {emptyMessage || "No Records Found."}
+                    </TableCell>
                   </TableRow>
-                ))
-              )
-            }
-          </TableBody>
+                ) : (
+                  data.map(item => (
+                    <TableRow key={getRowKey(item)}>
+                      {
+                        columns.map((col, inx) => (
+                          <TableCell key={inx} className={col.className}>
+                            {col.getValue(item)}
+                          </TableCell>
+                        ))
+                      }
+                      {hasActions && (
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              {onView && (
+                                <DropdownMenuItem onClick={() => onView(item)}>
+                                  <Eye className="mr-2 h-4 w-4" />
+                                  View
+                                </DropdownMenuItem>
+                              )}
+                              {onEdit && (
+                                <DropdownMenuItem onClick={() => onEdit(item)}>
+                                  <Edit className="mr-2 h-4 w-4" />
+                                  Edit
+                                </DropdownMenuItem>
+                              )}
+                              {onDelete && (
+                                <DropdownMenuItem
+                                  onClick={() => onDelete(item)}
+                                  className="text-destructive"
+                                >
+                                  <Trash className="mr-2 h-4 w-4" />
+                                  Delete
+                                </DropdownMenuItem>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  ))
+                )
+              }
+            </TableBody>
 
-        </Table>
+          </Table>
+        </div>
       </div>
     </>
   );
