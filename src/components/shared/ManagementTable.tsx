@@ -1,7 +1,8 @@
 "use client"
 import { cn } from "@/lib/utils";
-import { Edit, Eye, Loader2, MoreHorizontal, Trash } from "lucide-react";
-import { HTMLAttributes, ReactNode } from "react";
+import { ArrowDown, ArrowDownUp, ArrowUp, Edit, Eye, Loader2, LucideIcon, MoreHorizontal, Trash } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { HTMLAttributes, ReactNode, useCallback } from "react";
 import { Button } from "../ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
@@ -9,7 +10,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 export interface Column<T> {
   header: string,
   getValue: (row: T) => ReactNode,
-  className?: HTMLAttributes<HTMLElement>["className"]
+  className?: HTMLAttributes<HTMLElement>["className"];
+  sortKey?: string;
 }
 
 
@@ -27,13 +29,36 @@ export interface ManagementTableProps<T> {
 
 export default function ManagementTable<T>({ data, columns, emptyMessage, getRowKey, isRefreshing, onDelete, onEdit, onView }: ManagementTableProps<T>) {
 
-  const hasActions = !!onDelete || !!onEdit || !!onView
+  const hasActions = !!onDelete || !!onEdit || !!onView;
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const sortKey = searchParams.get("sortBy");
+  const sortOrder = searchParams.get("order") as "asc" | "desc" | null;
+
+  const handleSort = useCallback((columnKey?: string) => {
+    if (!columnKey) return;
+
+    const nextOrder = sortKey !== columnKey
+      ? "asc"
+      : sortOrder === "asc" ? "desc" : "asc";
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("sortBy", columnKey);
+    params.set("order", nextOrder);
+
+    router.push(`${pathname}?${params.toString()}`);
+  }, [sortKey, sortOrder, pathname, searchParams, router]);
+
+  const getSortIcon = (columnKey?: string): LucideIcon => {
+    if (!columnKey || sortKey !== columnKey) return ArrowDownUp;
+    return sortOrder === "asc" ? ArrowUp : ArrowDown;
+  };
 
   return (
     <>
       <div className="rounded-lg border my-6">
-
-
         {/* Refreshing Overlay */}
         {isRefreshing && (
           <div className="absolute inset-0 bg-background/50 backdrop-blur-[2px] flex items-center justify-center z-10 rounded-lg">
@@ -49,9 +74,29 @@ export default function ManagementTable<T>({ data, columns, emptyMessage, getRow
             <TableHeader className="sticky top-0 bg-background z-10">
               <TableRow >
                 {
-                  columns?.map((column, cInx) => (
-                    <TableHead key={cInx} className={column.className}>{column.header}</TableHead>
-                  ))
+                  columns.map((column, cInx) => {
+                    const Icon = getSortIcon(column.sortKey)
+
+                    return column.sortKey ? (
+                      <TableHead
+                        key={cInx}
+                        onClick={() => handleSort(column.sortKey)}
+                        className={cn(
+                          column.className,
+                          "cursor-pointer select-none"
+                        )}
+                      >
+                        <div className="flex items-center gap-1">
+                          {column.header}
+                          <Icon className="h-3 w-3" />
+                        </div>
+                      </TableHead>
+                    ) : (
+                      <TableHead key={cInx} className={column.className}>
+                        {column.header}
+                      </TableHead>
+                    )
+                  })
                 }
                 {hasActions && (
                   <TableHead className={cn("w-[70px]")}>Actions</TableHead>
@@ -124,5 +169,5 @@ export default function ManagementTable<T>({ data, columns, emptyMessage, getRow
         </div>
       </div>
     </>
-  );
+  )
 }
