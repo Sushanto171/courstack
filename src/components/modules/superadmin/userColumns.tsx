@@ -10,6 +10,7 @@ export const userColumns: Column<IUser>[] = [
   {
     header: "Info",
     getValue: (row) => <UserInfo user={row} />,
+    sortKey: "name",
   },
   {
     header: "Phone",
@@ -39,5 +40,6 @@ export const userColumns: Column<IUser>[] = [
   {
     header: "Joined",
     getValue: (row) => getDateTime(row.createdAt),
+    sortKey: "createdAt"
   }
 ]

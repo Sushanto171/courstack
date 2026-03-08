@@ -6,8 +6,8 @@ import { IMeta } from "@/types/shared";
 import { IUser } from "@/types/user";
 
 
-export const getUsers = catchAsync(async () => {
-  const res = await serverFetch.get("/user");
+export const getUsers = catchAsync(async (query?: string) => {
+  const res = await serverFetch.get(`/user?${query}`);
 
   if (!res.ok) {
     throw new Error("Users fetching failed. Please try Again.")
