@@ -1,4 +1,4 @@
-import { getCookie } from "./cookie";
+import { cookies } from "next/headers";
 
 const baseUrl =
   process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:5000/api/v1"
@@ -11,17 +11,10 @@ const serverFetchHelper = async (
   endpoint: string,
   options: ServerFetchOptions = {}
 ): Promise<Response> => {
-  const {  isMultipart, body, ...rest } = options;
+  const { isMultipart, body, ...rest } = options;
 
-  const accessToken = await getCookie("accessToken");
-  const refreshToken = await getCookie("refreshToken");
-
-  const cookieHeader = [
-    accessToken && `accessToken=${accessToken}`,
-    refreshToken && `refreshToken=${refreshToken}`,
-  ]
-    .filter(Boolean)
-    .join("; ");
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore.getAll().map(({ name, value }) => `${name}=${value}`).join(";")
 
   const finalHeaders: HeadersInit = {
     ...(isMultipart ? {} : { "Content-Type": "application/json", }),

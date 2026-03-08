@@ -6,3 +6,7 @@ export const getInitials = (name: string) => {
     ?.slice(0, 2)
     ?.toUpperCase() || "U"
 }
+
+export const getDateTime = (date: Date) => {
+  return new Date(date).toLocaleDateString()
+}

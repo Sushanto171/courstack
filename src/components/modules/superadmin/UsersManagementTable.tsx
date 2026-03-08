@@ -11,7 +11,6 @@ export default function UsersManagementTable({ users }: { users: IUser[] }) {
   }
   return (<>
     <ManagementTable
-
       onView={handleView}
       data={users} columns={userColumns} getRowKey={(row) => row.id} />
   </>
