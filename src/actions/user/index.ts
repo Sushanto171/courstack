@@ -14,5 +14,7 @@ export const getUsers = catchAsync(async (query?: string) => {
   }
 
   const { data, meta } = await res.json()
+  console.log(query, data, meta);
   return { users: data as IUser[], meta: meta as IMeta }
 })
+
