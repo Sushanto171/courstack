@@ -74,7 +74,6 @@ export async function proxy(request: NextRequest,) {
   }
 
   if (routeOwner !== "COMMON" && routeOwner !== userRole) {
-    console.log("hit");
     return NextResponse.redirect(
       new URL(getDefaultDashboardRoute(userRole), request.url)
     );

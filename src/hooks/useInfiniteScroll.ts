@@ -41,7 +41,6 @@ export const useInfiniteScroll = <T>({
       setHasMore(result?.hasMore)
     } catch (err: any) {
       if (err.name === "AbortError") return;
-      console.log({ err });
       setError("Failed to load more. Try again.");
     } finally {
       setLoading(false);

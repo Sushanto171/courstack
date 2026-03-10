@@ -11,6 +11,7 @@ export const userColumns: Column<IUser>[] = [
     header: "Info",
     getValue: (row) => <UserInfo user={row} />,
     sortKey: "name",
+    title: (row) => row.email
   },
   {
     header: "Phone",

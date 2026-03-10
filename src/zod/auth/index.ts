@@ -1,7 +1,7 @@
 import z from "zod"
 
 export const userRegisterSchema = z.object({
-  role: z.enum(["STUDENT", "INSTRUCTOR"]),
+  role: z.enum(["STUDENT", "INSTRUCTOR",]).optional(),
   name: z.string().min(2, "Name required"),
   email: z.string().email(),
   password: z

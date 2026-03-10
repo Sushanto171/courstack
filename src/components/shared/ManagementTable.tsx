@@ -6,12 +6,14 @@ import { HTMLAttributes, ReactNode, Ref, useCallback } from "react";
 import { Button } from "../ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 export interface Column<T> {
   header: string,
   getValue: (row: T) => ReactNode,
   className?: HTMLAttributes<HTMLElement>["className"];
   sortKey?: string;
+  title?: (row: T) => string
 }
 
 
@@ -35,7 +37,7 @@ export interface ManagementTableProps<T> {
 }
 
 
-export default function ManagementTable<T>({ data, columns, emptyMessage, getRowKey, isRefreshing, onDelete, onEdit, onView, sentinelRef, hasMore, loading, error, retry }: ManagementTableProps<T>) {
+export default function ManagementTable<T>({ data, columns, emptyMessage, getRowKey, isRefreshing, onDelete, onEdit, onView, sentinelRef, hasMore, loading, error, retry, }: ManagementTableProps<T>) {
 
   const hasActions = !!onDelete || !!onEdit || !!onView;
   const searchParams = useSearchParams();
@@ -66,7 +68,7 @@ export default function ManagementTable<T>({ data, columns, emptyMessage, getRow
 
   return (
     <>
-      <div className="rounded-lg border my-6">
+      <div className="rounded-lg border my-6 ">
         {/* Refreshing Overlay */}
         {isRefreshing && (
           <div className="absolute inset-0 bg-background/50 backdrop-blur-[2px] flex items-center justify-center z-10 rounded-lg">
@@ -77,7 +79,7 @@ export default function ManagementTable<T>({ data, columns, emptyMessage, getRow
           </div>
         )}
 
-        <div className="overflow-x-auto max-h-[calc(100vh-210px)]">
+        <div className="overflow-x-auto max-h-[calc(100vh-208px)]">
           <Table >
             <TableHeader className="sticky top-0 bg-background z-10">
               <TableRow >
@@ -107,7 +109,7 @@ export default function ManagementTable<T>({ data, columns, emptyMessage, getRow
                   })
                 }
                 {hasActions && (
-                  <TableHead className={cn("w-[70px]")}>Actions</TableHead>
+                  <TableHead className={cn("w-17.5")}>Actions</TableHead>
                 )}
               </TableRow>
             </TableHeader>
@@ -129,7 +131,7 @@ export default function ManagementTable<T>({ data, columns, emptyMessage, getRow
                       <TableRow key={getRowKey(item)}>
                         {
                           columns.map((col, inx) => (
-                            <TableCell key={inx} className={col.className}>
+                            <TableCell title={String(col.title ? col.title(item) : "")} key={inx} className={cn("max-w-40 truncate", col.className,)}>
                               {col.getValue(item)}
                             </TableCell>
                           ))
@@ -172,9 +174,6 @@ export default function ManagementTable<T>({ data, columns, emptyMessage, getRow
                     ))
 
                   }
-
-
-
                   </>
                 )
               }
@@ -197,9 +196,9 @@ export default function ManagementTable<T>({ data, columns, emptyMessage, getRow
             )}
             {/* End of list */}
             {loading && (
-              <p className="text-center text-muted-foreground py-8 text-sm">
-                fetching...
-              </p>
+              <div className="text-center text-muted-foreground py-8 text-sm">
+                <LoadingSpinner />
+              </div>
             )}
             {!hasMore && data.length > 0 && (
               <p className="text-center text-muted-foreground py-8 text-sm">
