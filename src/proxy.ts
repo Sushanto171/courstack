@@ -27,6 +27,12 @@ export async function proxy(request: NextRequest,) {
   const requestHeaders = new Headers(request.headers)
   requestHeaders.set("x-pathname", pathname)
 
+  if (request.headers.get("next-action") ||
+    request.headers.get("rsc") ||
+    request.headers.get("next-router-prefetch")) {
+    return NextResponse.next();
+  }
+
 
   const accessToken = request.cookies.get("accessToken")?.value;
   const refreshToken = request.cookies.get("refreshToken")?.value;

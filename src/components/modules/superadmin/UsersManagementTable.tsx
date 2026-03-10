@@ -5,6 +5,7 @@ import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { IMeta } from "@/types/shared";
 import { IUser } from "@/types/user";
 import { useCallback } from "react";
+import { getUsers } from './../../../actions/user/index';
 import { userColumns } from "./userColumns";
 
 
@@ -16,14 +17,14 @@ export default function UsersManagementTable({ users, meta, queryString }: { use
     const query = queryString
       ? `${queryString}&cursor=${cursor}`
       : `cursor=${cursor}`;
-    const res = await fetch(`/api/users?${query}`);
-    const result = await res.json();
+    const result = await getUsers(query);
+
     if (!result.success) throw new Error(result.message)
 
     return {
-      data: result.data,
-      nextCursor: result.meta.nextCursor,
-      hasMore: result.meta.hasMore,
+      data: result.data.users,
+      nextCursor: result.data.meta.nextCursor,
+      hasMore: result.data.meta.hasMore,
     };
   }, [queryString])
 

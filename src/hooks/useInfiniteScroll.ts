@@ -6,7 +6,7 @@ interface InfiniteScrollOptions<T> {
   initialData: T[],
   initialCursor: string | null,
   initialHasMore: boolean,
-  fetchFn: (cursor: string, signal: AbortSignal) => Promise<{
+  fetchFn: (cursor: string,) => Promise<{
     data: T[],
     nextCursor: string | null,
     hasMore: boolean
@@ -35,12 +35,13 @@ export const useInfiniteScroll = <T>({
     setError(null)
 
     try {
-      const result = await fetchFn(cursor, abortRef.current?.signal);
+      const result = await fetchFn(cursor);
       setItems((prev) => [...prev, ...result?.data]);
       setCursor(result?.nextCursor)
       setHasMore(result?.hasMore)
     } catch (err: any) {
       if (err.name === "AbortError") return;
+      console.log({ err });
       setError("Failed to load more. Try again.");
     } finally {
       setLoading(false);
